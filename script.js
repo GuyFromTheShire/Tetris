@@ -68,12 +68,31 @@ document.addEventListener('DOMContentLoaded', () => {
         undraw()
         currentPosition += width
         draw()
+        freeze()
       }
 
       //freeze function
       function freeze() {
         if(current.some(index => squares[currentPosition + index + width].classList.contains('taken'))){
-          current.forEach(index => squares[currentPosition + index].classList.add('taken'))
+          current.forEach(index => squares[currentPosition + index].classList.add('taken'))  
+          //start a new tetromino falling
+          random = Math.floor(Math.random() * theTetrominoes.length)
+          current = theTetrominoes[random][currentRotation]
+          currentPosition = 4
+          draw()
         }
+      }
+
+      function moveLeft() {
+        undraw()
+        const isAtLeftEdge = current.some(index => (currentPosition + index) % width === 0)
+
+        if(!isAtLeftEdge) currentPosition -= 1
+
+        if(current.some(index => squares[currentPosition + index].classList.contains('taken'))){
+          currentPosition += 1
+        }
+
+        draw()
       }
     })
